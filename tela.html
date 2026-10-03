@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Guia prático com 5 boas práticas de Bootstrap 5: botões, grid, utilitários e formulários.">
+    <meta name="author" content="Lucas">
+    <title>Guia prático de Bootstrap 5</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* CSS próprio mínimo: só o que o Bootstrap não cobre */
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 4.5rem;
+        }
+
+        pre {
+            font-size: .85rem;
+        }
+
+        .demo-box {
+            background: var(--bs-primary-bg-subtle);
+            border: 1px solid var(--bs-primary-border-subtle);
+            padding: .75rem;
+            text-align: center;
+            border-radius: .375rem;
+        }
+
+        /* Menu: borda cinza básica ao redor de cada link + azul ao passar o mouse */
+        .navbar .nav-link {
+            border: 1px solid var(--bs-border-color);
+            border-radius: .375rem;
+            margin: .25rem;
+            padding: .375rem .75rem;
+            transition: color .2s, border-color .2s, background-color .2s;
+        }
+
+        .navbar .nav-link:hover {
+            color: var(--bs-primary);
+            border-color: var(--bs-primary);
+            background-color: var(--bs-primary-bg-subtle);
+        }
+
+        /* Cards: ficam azuis ao passar o mouse */
+        .card {
+            transition: border-color .2s, background-color .2s;
+        }
+
+        .card:hover {
+            border-color: var(--bs-primary);
+            background-color: var(--bs-primary-bg-subtle);
+        }
+
+        .card:hover .card-title {
+            color: var(--bs-primary);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR RESPONSIVA -->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#topo">Guia Bootstrap</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu"
+                aria-controls="menu" aria-expanded="false" aria-label="Abrir menu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="menu">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#setup">1. Setup</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#botoes">2. Botões</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#grid">3. Grid</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#utilitarios">4. Utilitários</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#formularios">5. Formulários</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <header id="topo" class="py-5 bg-body-secondary border-bottom">
+        <div class="container py-4">
+            <h1 class="display-5 fw-bold">5 boas práticas de Bootstrap</h1>
+            <p class="lead col-lg-8">
+                Cada seção tem um título (o que você vai aprender), uma explicação curta,
+                o resultado ao vivo e o código logo abaixo para copiar.
+            </p>
+            <div class="d-flex flex-wrap gap-2">
+                <a href="#setup" class="btn btn-primary btn-lg">Começar</a>
+                <a href="#botoes" class="btn btn-outline-secondary btn-lg">Ir para os botões</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- ========== 1. SETUP ========== -->
+        <section id="setup" class="py-5 border-bottom">
+            <h2 class="mb-1">1. Carregue o Bootstrap do jeito certo</h2>
+            <p class="text-muted">CSS no <code>&lt;head&gt;</code>, JS no fim do <code>&lt;body&gt;</code>.</p>
+
+            <h3 class="h5 mt-4">Estrutura base do arquivo</h3>
+            <p>
+                Use o <strong>bundle</strong> do JS: ele já inclui o Popper, necessário para dropdowns,
+                tooltips e popovers. Fixe a versão (<code>5.3.3</code>) para o projeto não quebrar
+                quando sair uma atualização. O <code>viewport</code> é obrigatório para o layout responsivo.
+            </p>
+            <pre class="bg-body-tertiary border rounded p-3"><code>&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;Minha página&lt;/title&gt;
+  &lt;link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  ...conteúdo...
+  &lt;script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"&gt;&lt;/script&gt;
+&lt;/body&gt;</code></pre>
+
+            <h3 class="h5 mt-4">Seu CSS vem depois do Bootstrap</h3>
+            <p>
+                Se precisar personalizar, crie um <code>style.css</code> carregado <em>depois</em> do Bootstrap
+                e prefira sobrescrever as variáveis CSS em vez de usar <code>!important</code>.
+            </p>
+            <pre class="bg-body-tertiary border rounded p-3"><code>&lt;link href=".../bootstrap.min.css" rel="stylesheet"&gt;
+&lt;link href="style.css" rel="stylesheet"&gt; &lt;!-- seu CSS por último --&gt;
+
+/* style.css */
+:root {
+  --bs-primary: #6f42c1;
+  --bs-primary-rgb: 111, 66, 193;
+}</code></pre>
+        </section>
+
+        <!-- ========== 2. BOTÕES ========== -->
+        <section id="botoes" class="py-5 border-bottom">
+            <h2 class="mb-1">2. Botões: hierarquia e semântica</h2>
+            <p class="text-muted">
+                Profissional não é colorir tudo: é ter <strong>um botão principal por área</strong> e deixar o resto
+                mais discreto.
+            </p>
+
+            <h3 class="h5 mt-4">Ação principal, secundária e perigosa</h3>
+            <p>
+                <code>btn-primary</code> chama a atenção para o que importa. <code>btn-outline-secondary</code>
+                tem menos peso visual (ideal para "Cancelar"). <code>btn-danger</code> fica só para ações destrutivas.
+            </p>
+            <div class="d-flex flex-wrap gap-2 mb-3">
+                <button type="button" class="btn btn-primary">Salvar</button>
+                <button type="button" class="btn btn-outline-secondary">Cancelar</button>
+                <button type="button" class="btn btn-danger">Excluir</button>
+            </div>
+            <pre class="bg-body-tertiary border rounded p-3"><code>&lt;button type="button" class="btn btn-primary"&gt;Salvar&lt;/button&gt;
+&lt;button type="button" class="btn btn-outline-secondary"&gt;Cancelar&lt;/button&gt;
+&lt;button type="button" class="btn btn-danger"&gt;Excluir&lt;/button&gt;</code></pre>
+
+            <h3 class="h5 mt-4">Tamanhos</h3>
+            <p>Use <code>btn-lg</code> e <code>btn-sm</code> em vez de definir <code>padding</code> e
+                <code>font-size</code> na mão.</p>
+            <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+                <button class="btn btn-primary btn-lg">Grande</button>
+                <button class="btn btn-primary">Padrão</button>
+                <button class="btn btn-primary btn-sm">Pequeno</button>
+            </div>
+            <pre class="bg-body-tertiary border rounded p-3"><code>&lt;button class="btn btn-primary btn-lg"&gt;Grande&lt;/button&gt;
+&lt;button class="btn btn-primary"&gt;Padrão&lt;/button&gt;
+&lt;button class="btn btn-primary btn-sm"&gt;Pequeno&lt;/button&gt;</code></pre>
+
+            <h3 class="h5 mt-4">Botão de largura total</h3>
+            <p>
+                Envolva o botão em <code>d-grid</code>. Funciona muito bem em formulários e no mobile.
+                Para largura total só no celular, use <code>d-grid d-md-block</code>.
+            </p>
+            <div class="d-grid mb-3">
+                <button class="btn btn-primary" type="submit">Entrar</button>
+            </div>
+            <pre class="bg-body-tertiary border rounded p-3"><code>&lt;div class="d-grid"&gt;
+  &lt;button class="btn btn-primary" type="submit"&gt;Entrar&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+
+            <h3 class="h5 mt-4">Estado de carregamento e desabilitado</h3>
+            <p>Mostre ao usuário que algo está acontecendo e impeça cliques repetidos com <code>disabled</code> +
+                spinner.</p>
+            <div class="d-flex flex-wrap gap-2 mb-3">
+                <button class="btn btn-primary" type="button" disabled>
+                    <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                    Carregando...
+                </button>
+                <button class="btn btn-secondary" type="button" disabled>Indisponível</button>
+            </div>
+            <pre class="bg-body-tertiary border rounded p-3"><code>&lt;button class="btn btn-primary" type="button" disabled&gt;
+  &lt;span class="spinner-border spinner-border-sm" aria-hidden="true"&gt;&lt;/span&gt;
+  Carregando...
+&lt;/button&gt;</code></pre>
+
+            <h3 class="h5 mt-4">Grupo de botões</h3>
+            <p>Use <code>btn-group</code> para ações relacionadas, como filtros ou alternância de visualização.</p>
+            <div class="btn-group mb-3" role="group" aria-label="Filtro de período">
+                <button type="button" class="btn btn-outline-primary active">Dia</button>
+                <button type="button" class="btn btn-outline-primary">Semana</button>
+                <button type="button" class="btn btn-outline-primary">Mês</button>
+            </div>
+            <pre class="bg-body-tertiary border rounded p-3"><code>&lt;div class="btn-group" role="group" aria-label="Filtro de período"&gt;
+  &lt;button type="button" class="btn btn-outline-primary active"&gt;Dia&lt;/button&gt;
+  &lt;button type="button" class="btn btn-outline-primary"&gt;Semana&lt;/button&gt;
+  &lt;button type="button" class="btn btn-outline-primary"&gt;Mês&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+
+            <h3 class="h5 mt-4">Regras rápidas</h3>
+            <ul>
+                <li>Use <code>&lt;button&gt;</code> para ações e <code>&lt;a class="btn"&gt;</code> só para navegação.
+                </li>
+                <li>Sempre defina <code>type="button"</code> ou <code>type="submit"</code>.</li>
+                <li>Espaçamento entre botões: <code>d-flex gap-2</code>, nunca margens manuais.</li>
+                <li>Textos de ação claros: "Salvar alterações" em vez de "Enviar".</li>
+            </ul>
+        </section>
+
+        <!-- ========== 3. GRID ========== -->
+        <section id="grid" class="py-5 border-bottom">
+            <h2 class="mb-1">3. Grid: pense mobile-first</h2>
+            <p class="text-muted">
+                São 12 colunas por linha. Você define o layout do menor para o maior breakpoint
+                (<code>sm</code> 576px, <code>md</code> 768px, <code>lg</code> 992px, <code>xl</code> 1200px,
+                <code>xxl</code> 1400px).
+            </p>
+
+            <h3 class="h5 mt-4">Colunas que se reorganizam por tela</h3>
+            <p>
+                Aqui: 1 coluna no celular (<code>col-12</code>), 2 no tablet (<code>col-md-6</code>)
+                e 3 no desktop (<code>col-lg-4</code>). Redimensione a janela para ver.
+            </p>
+            <div class="container-fluid px-0 mb-3">
+                <div class="row g-3">
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="demo-box">Coluna 1</div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="demo-box">Coluna 2</div>
+                    </div>
+                    <div class="col-12 col-md-12 col-lg-4">
+                        <div class="demo-box">Coluna 3</div>
+                    </div>
+                </div>
+            </div>
+            <pre class="bg-body-tertiary border rounded p-3"><code>&lt;div class="container"&gt;
+  &lt;div class="row g-3"&gt;
+    &lt;div class="col-12 col-md-6 col-lg-4"&gt;Coluna 1&lt;/div&gt;
+    &lt;div class="col-12 col-md-6 col-lg-4"&gt;Coluna 2&lt;/div&gt;
+    &lt;div class="col-12 col-md-12 col-lg-4"&gt;Coluna 3&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+            <h3 class="h5 mt-4">Colunas de larguras automáticas</h3>
+            <p>Só <code>col</code> (sem número) divide o espaço igualmente. Combine com <code>col-auto</code> para uma
+                coluna do tamanho do conteúdo.</p>
+            <div class="row g-3 mb-3">
+                <div class="col">
+                    <div class="demo-box">col</div>
+                </div>
+                <div class="col">
+                    <div class="demo-box">col</div>
+                </div>
+                <div class="col-auto">
+                    <div class="demo-box">col-auto</div>
+                </div>
+            </div>
+            <pre class="bg-body-tertiary border rounded p-3"><code>&lt;div class="row g-3"&gt;
+  &lt;div class="col"&gt;col&lt;/div&gt;
+  &lt;div class="col"&gt;col&lt;/div&gt;
+  &lt;div class="col-auto"&gt;col-auto&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+            <h3 class="h5 mt-4">Grade de cards com <code>row-cols</code></h3>
+            <p>
+                Em vez de repetir <code>col-md-4</code> em cada item, defina na <code>row</code> quantas colunas
+                cada item ocupa: <code>row-cols-1 row-cols-md-3</code>.
+            </p>
+            <div class="row row-cols-1 row-cols-md-3 g-3 mb-3">
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h4 class="h6 card-title">Projeto A</h4>
+                            <p class="card-text small text-muted">Descrição curta do projeto.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h4 class="h6 card-title">Projeto B</h4>
+                            <p class="card-text small text-muted">Descrição curta do projeto.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h4 class="h6 card-title">Projeto C</h4>
+                            <p class="card-text small text-muted">Descrição curta do projeto.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <pre class="bg-body-tertiary border rounded p-3"><code>&lt;div class="row row-cols-1 row-cols-md-3 g-3"&gt;
+  &lt;div class="col"&gt;
+    &lt;div class="card h-100"&gt;
+      &lt;div class="card-body"&gt;
+        &lt;h4 class="h6 card-title"&gt;Projeto A&lt;/h4&gt;
+        &lt;p class="card-text"&gt;Descrição...&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;!-- repita o &lt;div class="col"&gt; para cada card --&gt;
+&lt;/div&gt;</code></pre>
+
+            <h3 class="h5 mt-4">Regras rápidas</h3>
+            <ul>
+                <li>Hierarquia sempre <code>container</code> &gt; <code>row</code> &gt; <code>col</code>. Nunca coloque
+                    conteúdo direto na <code>row</code>.</li>
+                <li>Espaço entre colunas com gutters (<code>g-3</code>, <code>gx-2</code>, <code>gy-4</code>), não com
+                    margens.</li>
+                <li><code>container-fluid</code> só quando quiser largura total.</li>
+                <li><code>h-100</code> nos cards deixa todos com a mesma altura na linha.</li>
+            </ul>
+        </section>
+
+        <!-- ========== 4. UTILITÁRIOS ========== -->
+        <section id="utilitarios" class="py-5 border-bottom">
+            <h2 class="mb-1">4. Utilitários no lugar de CSS próprio</h2>
+            <p class="text-muted">Boa parte do que você escreveria em CSS já existe como classe pronta.</p>
+
+            <h3 class="h5 mt-4">Espaçamento (margin e padding)</h3>
+            <p>
+                Formato: <code>{propriedade}{lado}-{tamanho}</code>. Propriedade: <code>m</code> (margin) ou
+                <code>p</code> (padding).
+                Lado: <code>t</code>, <code>b</code>, <code>s</code>, <code>e</code>, <code>x</code>, <code>y</code>.
+                Tamanho: <code>0</code> a <code>5</code>.
+            </p>
+            <div class="bg-body-secondary rounded mb-3">
+                <div class="p-4 bg-primary-subtle rounded">
+                    <div class="p-2 bg-body rounded">p-4 por fora, p-2 por dentro</div>
+                </div>
+            </div>
+            <pre class="bg-body-tertiary border rounded p-3"><code>&lt;div class="p-4 bg-primary-subtle rounded"&gt;
+  &lt;div class="p-2 bg-body rounded"&gt;p-4 por fora, p-2 por dentro&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Exemplos: mt-3 (margem topo), mb-0 (sem margem embaixo), px-5 (padding horizontal) --&gt;</code></pre>
+
+            <h3 class="h5 mt-4">Alinhamento com Flexbox</h3>
+            <p>
+                <code>d-flex</code> ativa o flex. <code>justify-content-*</code> alinha no eixo horizontal,
+                <code>align-items-*</code> no vertical e <code>gap-*</code> cria o espaço entre os itens.
+            </p>
+            <div class="d-flex justify-content-between align-items-center border rounded p-3 mb-3">
+                <strong>Logo</strong>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-sm btn-outline-secondary">Entrar</button>
+                    <button class="btn btn-sm btn-primary">Criar conta</button>
+                </div>
+            </div>
+            <pre class="bg-body-tertiary border rounded p-3"><code>&lt;div class="d-flex justify-content-between align-items-center border rounded p-3"&gt;
+  &lt;strong&gt;Logo&lt;/strong&gt;
+  &lt;div class="d-flex gap-2"&gt;
+    &lt;button class="btn btn-sm btn-outline-secondary"&gt;Entrar&lt;/button&gt;
+    &lt;button class="btn btn-sm btn-primary"&gt;Criar conta&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+            <h3 class="h5 mt-4">Mostrar e esconder por tamanho de tela</h3>
+            <p>
+                <code>d-none d-md-block</code> = escondido no celular, visível do tablet em diante.
+                <code>d-md-none</code> faz o contrário.
+            </p>
+            <div class="mb-3">
+                <div class="alert alert-info mb-0 d-md-none">Você está numa tela pequena (celular).</div>
+                <div class="alert alert-success mb-0 d-none d-md-block">Você está numa tela média ou maior.</div>
+            </div>
+            <pre class="bg-body-tertiary border rounded p-3"><code>&lt;div class="alert alert-info d-md-none"&gt;Tela pequena&lt;/div&gt;
+&lt;div class="alert alert-success d-none d-md-block"&gt;Tela média ou maior&lt;/div&gt;</code></pre>
+
+            <h3 class="h5 mt-4">Texto, bordas e sombras</h3>
+            <div class="d-flex flex-wrap gap-3 mb-3">
+                <div class="p-3 border rounded-3 shadow-sm">
+                    <p class="fw-bold mb-1">Título em negrito</p>
+                    <p class="text-muted small mb-0">Texto secundário e pequeno</p>
+                </div>
+                <div class="p-3 bg-dark text-white rounded-pill px-4">rounded-pill</div>
+            </div>
+            <pre class="bg-body-tertiary border rounded p-3"><code>&lt;div class="p-3 border rounded-3 shadow-sm"&gt;
+  &lt;p class="fw-bold mb-1"&gt;Título em negrito&lt;/p&gt;
+  &lt;p class="text-muted small mb-0"&gt;Texto secundário e pequeno&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+
+            <h3 class="h5 mt-4">Centralizar um card na tela inteira (tela de login)</h3>
+            <p>
+                <code>min-vh-100</code> dá a altura da janela, e o flex centraliza. O <code>max-width</code> evita
+                que o card fique gigante no desktop e o <code>w-100</code> faz ele ocupar tudo no celular.
+            </p>
+            <pre class="bg-body-tertiary border rounded p-3"><code>&lt;div class="container min-vh-100 d-flex justify-content-center align-items-center"&gt;
+  &lt;div class="card shadow-sm p-4 w-100" style="max-width: 400px;"&gt;
+    ...conteúdo do login...
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        </section>
+
+        <!-- ========== 5. FORMULÁRIOS ========== -->
+        <section id="formularios" class="py-5 border-bottom">
+            <h2 class="mb-1">5. Formulários e acessibilidade</h2>
+            <p class="text-muted">Todo campo precisa de um <code>label</code> ligado ao <code>input</code> pelo par
+                <code>for</code>/<code>id</code>.</p>
+
+            <h3 class="h5 mt-4">Formulário padrão com label</h3>
+            <p>
+                Use <code>mb-3</code> para separar os campos, <code>form-label</code> nos rótulos,
+                <code>form-control</code> nos inputs e o atributo <code>required</code> para validação nativa do
+                navegador.
+            </p>
+            <form class="col-lg-6 mb-3" onsubmit="return false;">
+                <div class="mb-3">
+                    <label for="nome" class="form-label">Nome</label>
+                    <input type="text" class="form-control" id="nome" placeholder="Seu nome" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">E-mail</label>
+                    <input type="email" class="form-control" id="email" placeholder="voce@email.com" required>
+                    <div class="form-text">Nunca compartilhamos seu e-mail.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="assunto" class="form-label">Assunto</label>
+                    <select class="form-select" id="assunto">
+                        <option selected>Escolha uma opção</option>
+                        <option>Dúvida</option>
+                        <option>Sugestão</option>
+                        <option>Outro</option>
+                    </select>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="aceito">
+                    <label class="form-check-label" for="aceito">Aceito os termos de uso</label>
+                </div>
+                <button type="submit" class="btn btn-primary">Enviar mensagem</button>
+            </form>
+            <pre class="bg-body-tertiary border rounded p-3"><code>&lt;form&gt;
+  &lt;div class="mb-3"&gt;
+    &lt;label for="email" class="form-label"&gt;E-mail&lt;/label&gt;
+    &lt;input type="email" class="form-control" id="email" required&gt;
+    &lt;div class="form-text"&gt;Nunca compartilhamos seu e-mail.&lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class="mb-3"&gt;
+    &lt;label for="assunto" class="form-label"&gt;Assunto&lt;/label&gt;
+    &lt;select class="form-select" id="assunto"&gt;...&lt;/select&gt;
+  &lt;/div&gt;
+
+  &lt;div class="form-check mb-3"&gt;
+    &lt;input class="form-check-input" type="checkbox" id="aceito"&gt;
+    &lt;label class="form-check-label" for="aceito"&gt;Aceito os termos&lt;/label&gt;
+  &lt;/div&gt;
+
+  &lt;button type="submit" class="btn btn-primary"&gt;Enviar mensagem&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+
+            <h3 class="h5 mt-4">Labels flutuantes (visual moderno)</h3>
+            <p>
+                Com <code>form-floating</code> o rótulo fica dentro do campo e sobe ao digitar.
+                O <code>input</code> vem <strong>antes</strong> do <code>label</code> e precisa de
+                <code>placeholder</code>.
+            </p>
+            <div class="col-lg-6 mb-3">
+                <div class="form-floating mb-3">
+                    <input type="email" class="form-control" id="emailFlutuante" placeholder="voce@email.com">
+                    <label for="emailFlutuante">E-mail</label>
+                </div>
+                <div class="form-floating">
+                    <input type="password" class="form-control" id="senhaFlutuante" placeholder="Senha">
+                    <label for="senhaFlutuante">Senha</label>
+                </div>
+            </div>
+            <pre class="bg-body-tertiary border rounded p-3"><code>&lt;div class="form-floating mb-3"&gt;
+  &lt;input type="email" class="form-control" id="emailFlutuante" placeholder="voce@email.com"&gt;
+  &lt;label for="emailFlutuante"&gt;E-mail&lt;/label&gt;
+&lt;/div&gt;</code></pre>
+
+            <h3 class="h5 mt-4">Feedback de validação</h3>
+            <p>
+                <code>is-valid</code> e <code>is-invalid</code> pintam o campo, e o texto em
+                <code>invalid-feedback</code> explica o erro. Mensagem de erro boa diz <em>o que fazer</em>, não só que
+                está errado. Neste exemplo, o JavaScript aceita só números, aplica a máscara e confirma que o CPF tem
+                exatamente 11 dígitos enquanto você digita.
+            </p>
+            <div class="col-lg-6 mb-3">
+                <label for="cpf" class="form-label">CPF</label>
+                <input type="text" class="form-control" id="cpf" inputmode="numeric" maxlength="14"
+                    placeholder="000.000.000-00" autocomplete="off">
+                <div class="valid-feedback">CPF com 11 dígitos.</div>
+                <div class="invalid-feedback">Digite os 11 números do CPF.</div>
+            </div>
+            <pre class="bg-body-tertiary border rounded p-3"><code>&lt;label for="cpf" class="form-label"&gt;CPF&lt;/label&gt;
+&lt;input type="text" class="form-control" id="cpf"
+       inputmode="numeric" maxlength="14" placeholder="000.000.000-00" autocomplete="off"&gt;
+&lt;div class="valid-feedback"&gt;CPF com 11 dígitos.&lt;/div&gt;
+&lt;div class="invalid-feedback"&gt;Digite os 11 números do CPF.&lt;/div&gt;
+
+&lt;script&gt;
+  const cpf = document.getElementById('cpf');
+
+  cpf.addEventListener('input', () =&gt; {
+    // 1) mantém só números e limita a 11 dígitos
+    const digitos = cpf.value.replace(/\D/g, '').slice(0, 11);
+
+    // 2) aplica a máscara 000.000.000-00
+    cpf.value = digitos
+      .replace(/(\d{3})(\d)/, '$1.$2')
+      .replace(/(\d{3})(\d)/, '$1.$2')
+      .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+
+    // 3) vazio = neutro, 11 dígitos = válido, menos que isso = inválido
+    cpf.classList.toggle('is-valid', digitos.length === 11);
+    cpf.classList.toggle('is-invalid', digitos.length &gt; 0 &amp;&amp; digitos.length &lt; 11);
+  });
+&lt;/script&gt;</code></pre>
+
+            <h3 class="h5 mt-4">Regras de acessibilidade</h3>
+            <ul>
+                <li>Sempre <code>label</code> com <code>for</code> igual ao <code>id</code> do campo.</li>
+                <li>Botões só com ícone precisam de <code>aria-label</code>.</li>
+                <li>Use o <code>type</code> correto (<code>email</code>, <code>tel</code>, <code>password</code>) para
+                    abrir o teclado certo no celular.</li>
+                <li>Não dependa só da cor para indicar erro: sempre escreva a mensagem.</li>
+            </ul>
+        </section>
+
+        <!-- ========== CHECKLIST ========== -->
+        <section class="py-5">
+            <h2 class="mb-1">Checklist final</h2>
+            <p class="text-muted">Antes de considerar uma tela pronta, confira:</p>
+            <div class="row row-cols-1 row-cols-md-2 g-3">
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h3 class="h6 card-title">Estrutura</h3>
+                            <ul class="small mb-0">
+                                <li>viewport presente</li>
+                                <li>CSS no head, bundle JS no final</li>
+                                <li>container &gt; row &gt; col</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h3 class="h6 card-title">Qualidade</h3>
+                            <ul class="small mb-0">
+                                <li>Testado em celular, tablet e desktop</li>
+                                <li>Um botão primário por área</li>
+                                <li>Labels e aria-label nos lugares certos</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-body-tertiary border-top py-4">
+        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+            <div class="text-center text-md-start small">
+                <strong class="d-block">Guia prático de Bootstrap 5.3</strong>
+                <span class="text-muted">Feito por Lucas, para estudo e postagem.</span>
+            </div>
+            <div class="d-flex gap-2">
+                <a class="btn btn-outline-secondary btn-sm" href="https://github.com/lucaspy2215" target="_blank"
+                    rel="noopener">GitHub</a>
+                <a class="btn btn-outline-secondary btn-sm"
+                    href="https://www.linkedin.com/in/lucas-rocha-de-farias-88b837364" target="_blank"
+                    rel="noopener">LinkedIn</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Validação do CPF: só números, máscara e exatamente 11 dígitos
+        const cpf = document.getElementById('cpf');
+
+        cpf.addEventListener('input', () => {
+            const digitos = cpf.value.replace(/\D/g, '').slice(0, 11);
+
+            cpf.value = digitos
+                .replace(/(\d{3})(\d)/, '$1.$2')
+                .replace(/(\d{3})(\d)/, '$1.$2')
+                .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+
+            cpf.classList.toggle('is-valid', digitos.length === 11);
+            cpf.classList.toggle('is-invalid', digitos.length > 0 && digitos.length < 11);
+        });
+    </script>
+</body>
+
+</html>
